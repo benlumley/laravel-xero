@@ -124,9 +124,9 @@ class Xero
         return $resource;
     }
 
-    public function webhooks(): Webhooks
+    public function webhooks($payload): Webhooks
     {
-        $resource = new Webhooks;
+        $resource = new Webhooks($payload);
         $resource->setTenantId($this->tenant_id);
 
         return $resource;
