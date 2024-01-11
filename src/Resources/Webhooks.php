@@ -8,11 +8,13 @@ class Webhooks extends Xero
 {
     protected string $payload;
 
-    public function validate(): bool
+    public function __construct(string $payload = null)
     {
-        $this->payload = file_get_contents("php://input");
-        $signature = $_SERVER['HTTP_X_XERO_SIGNATURE'];
+        $this->payload = $payload;
+    }
 
+    public function validate(string $signature) : bool
+    {
         return hash_equals($this->getSignature(), $signature);
     }
 
@@ -21,9 +23,10 @@ class Webhooks extends Xero
         return base64_encode(hash_hmac('sha256', $this->payload, config('xero.webhookKey'), true));
     }
 
-    public function getEvents(): array
+
+    public function getEvents(string $signature) : array
     {
-        $this->validate();
+        $this->validate($signature);
 
         $payload = json_decode($this->payload);
 

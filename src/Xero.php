@@ -53,9 +53,9 @@ class Xero
         return new Invoices();
     }
 
-    public function webhooks(): Webhooks
+    public function webhooks($payload): Webhooks
     {
-        return new Webhooks();
+        return new Webhooks($payload);
     }
 
     public function isConnected(): bool
